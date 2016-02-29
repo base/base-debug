@@ -52,6 +52,7 @@ module.exports = function debugPlugin(namespaces) {
         app.debug[ns].color = app.debug.color;
       }
     }
+    return plugin;
   };
 };
 

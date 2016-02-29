@@ -7,6 +7,8 @@
 
 'use strict';
 
+var requiresCache = {};
+
 /**
  * Plugin that adds `debug` method to the instance
  * and `namespaces` are added to this method.
@@ -68,7 +70,7 @@ function debugFactory() {
   }
 
   return function debug() {
-    var fn = require('debug');
+    var fn = requiresCache.debug || (requiresCache.debug = require('debug'));
     var debugSuffix = segs.join(':');
     var debugNamespace = app._debugPrefix + ':' + debugSuffix;
     app.define('_debugNamespace', debugNamespace);

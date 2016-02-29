@@ -23,9 +23,9 @@
     "debug": "^2.2.0"
   },
   "devDependencies": {
-    "base": "^0.6.5",
+    "base": "^0.7.8",
     "gulp-format-md": "*",
-    "mocha": "^2.3.4"
+    "mocha": "*"
   },
   "keywords": [
     "base",

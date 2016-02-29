@@ -49,7 +49,8 @@ module.exports = function debugPlugin(namespaces) {
       while (i < len) {
         var ns = namespaces[i++];
         app.debug[ns] = debugFactory.call(app, ns);
-        app.debug[ns].color = app.debug.color;
+        // @todo, i think it would be tricky
+        // app.debug[ns].color = app.debug.color;
       }
     }
     return plugin;

@@ -36,7 +36,7 @@ module.exports = function debugPlugin(namespaces) {
   namespaces = Array.isArray(namespaces) ? namespaces : [namespaces];
 
   return function plugin(app) {
-    app.define('_debugNamespace', app._namespace);
+    app.define('_debugPrefix', app._namespace);
     app.define('debug', function debug() {
       return debugFactory.apply(app, arguments);
     });
@@ -56,7 +56,7 @@ module.exports = function debugPlugin(namespaces) {
 function debugFactory() {
   var app = this;
   var args = [].slice.call(arguments);
-  var segs = app._namespace.split(':');
+  var segs = [];
   var len = args.length;
   var i = 0;
 
@@ -69,9 +69,11 @@ function debugFactory() {
 
   return function debug() {
     var fn = require('debug');
-    var namespace = segs.join(':');
-    app.define('_debugNamespace', namespace);
-    fn(namespace).apply(fn, arguments);
+    var debugSuffix = segs.join(':');
+    var debugNamespace = app._debugPrefix + ':' + debugSuffix;
+    app.define('_debugNamespace', debugNamespace);
+    app.define('_debugSuffix', debugSuffix);
+    fn(debugNamespace).apply(fn, arguments);
     return app;
   };
 }

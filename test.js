@@ -26,26 +26,18 @@ describe('base-debug', function() {
   it('should take a namespace', function() {
     var debug = app.debug('bar');
     debug('debugging %s', 'whatever');
-    assert.equal(app._namespace, 'base');
+    assert.equal(app._debugPrefix, 'base');
     assert.equal(app._debugNamespace, 'base:bar');
+    assert.equal(app._debugSuffix, 'bar');
   });
 
   it('should take a complex namespace', function() {
     app.debug('bar:one', 123, 'foo:qux:two', 'four', 'five:six')('hello world');
     //=> base:bar:one:foo:qux:two:four:five:six hello world
 
-    assert.equal(app._namespace, 'base');
+    assert.equal(app._debugPrefix, 'base');
     assert.equal(app._debugNamespace, 'base:bar:one:foo:qux:two:four:five:six');
-  });
-
-  it('should not have built-in debug namespaces', function() {
-    app.debug('two')('wooo hooo');
-    //=> base:two wooo hooo
-
-    assert.equal(typeof app.debug.context, 'undefined');
-    assert.equal(typeof app.debug.engine, 'undefined');
-    assert.equal(typeof app.debug.helper, 'undefined');
-    assert.equal(app._debugNamespace, 'base:two');
+    assert.equal(app._debugSuffix, 'bar:one:foo:qux:two:four:five:six');
   });
 
   it('should be able to pass custom namespaces', function() {
@@ -54,7 +46,9 @@ describe('base-debug', function() {
     base.debug.helper('loading foo helper');
     //=> base:helper loading foo helper
 
+    assert.equal(base._debugPrefix, 'base');
     assert.equal(base._debugNamespace, 'base:helper');
+    assert.equal(base._debugSuffix, 'helper');
     assert.equal(typeof base.debug.engine, 'function');
   });
 
@@ -65,5 +59,9 @@ describe('base-debug', function() {
     base.debug.item = base.debug('collection:item');
     base.debug.item('loading collection item');
     //=> base:collection:item loading collection item
+
+    assert.equal(base._debugPrefix, 'base');
+    assert.equal(base._debugNamespace, 'base:collection:item');
+    assert.equal(base._debugSuffix, 'collection:item');
   });
 });
